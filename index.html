@@ -4,425 +4,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VALOBLOX — Tactical FPS</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+<title>VALOBLOX</title>
 
-:root {
-  --red: #ff4655;
-  --bg: #101116;
-  --panel: #191b23;
-  --muted: #92949f;
-  --white: #f4f4f5;
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-* { box-sizing: border-box; }
+
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--white);
-  font-family: Inter, sans-serif;
+    background: #000;
+    color: #fff;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
-button { font: inherit; cursor: pointer; }
-header {
-  height: 76px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 6%;
-  background: #111218;
-  border-bottom: 1px solid #292a32;
+
+.screen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #000;
 }
-.logo {
-  font: 700 30px Rajdhani, sans-serif;
-  letter-spacing: 2px;
+
+.message {
+    display: none;
+    color: white;
+    animation: appear 0.5s ease;
 }
-.logo span { color: var(--red); }
-nav { display:flex; gap:28px; }
-nav button {
-  color:#aaa;
-  background:none;
-  border:0;
-  font-weight:700;
-  font-size:12px;
-  letter-spacing:1px;
+
+.message h1 {
+    font-size: 25px;
+    font-weight: 500;
 }
-nav button:hover, nav button.active { color:var(--red); }
-.account {
-  border:1px solid #444;
-  padding:10px 18px;
-  color:white;
-  background:transparent;
-  font-size:12px;
-  font-weight:700;
+
+.message p {
+    font-size: 13px;
+    margin-top: 12px;
+    color: #fff;
+    letter-spacing: 1px;
 }
-main { min-height: calc(100vh - 76px); }
-.page { display:none; padding:45px 7%; }
-.page.active { display:block; }
-.hero {
-  min-height:430px;
-  padding:65px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:flex-start;
-  background:
-    linear-gradient(90deg,#111218 5%,rgba(17,18,24,.92) 40%,rgba(17,18,24,.25)),
-    linear-gradient(135deg,#431d28,#171923 65%,#29202a);
-  border:1px solid #37303a;
-  position:relative;
-  overflow:hidden;
-}
-.hero:after {
-  content:"V";
-  position:absolute;
-  right:9%;
-  top:-120px;
-  font:700 600px Rajdhani;
-  color:rgba(255,70,85,.09);
-  pointer-events:none;
-}
-.eyebrow {
-  color:var(--red);
-  letter-spacing:4px;
-  font-size:11px;
-  font-weight:800;
-}
-h1 {
-  font:700 clamp(55px,9vw,105px)/.9 Rajdhani;
-  margin:18px 0;
-  letter-spacing:2px;
-}
-h1 span { color:var(--red); }
-.hero p { color:#b6b6bf; max-width:470px; line-height:1.8; }
-.primary {
-  background:var(--red);
-  color:white;
-  border:0;
-  padding:16px 26px;
-  font-weight:800;
-  letter-spacing:1px;
-  margin-top:22px;
-}
-.primary:hover { background:#df3445; }
-.section-title {
-  font:700 34px Rajdhani;
-  letter-spacing:1px;
-  margin:0 0 8px;
-}
-.sub { color:var(--muted); font-size:13px; margin-bottom:28px; }
-.cards {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:16px;
-  margin-top:30px;
-}
-.card {
-  background:var(--panel);
-  border:1px solid #30313a;
-  padding:23px;
-  min-height:145px;
-}
-.card h3 { font:700 23px Rajdhani; margin:0 0 9px; }
-.card p { color:var(--muted); font-size:12px; line-height:1.6; }
-.card button {
-  background:transparent;
-  color:var(--red);
-  border:1px solid #574047;
-  padding:10px 14px;
-  font-size:11px;
-  font-weight:800;
-  margin-top:10px;
-}
-.skin {
-  background:linear-gradient(145deg,#292b36,#171820);
-  border:1px solid #393b45;
-  padding:20px;
-}
-.weapon {
-  height:100px;
-  display:grid;
-  place-items:center;
-  font:700 45px Rajdhani;
-  color:var(--red);
-  background:linear-gradient(135deg,#33313a,#171820);
-  margin-bottom:15px;
-}
-.skin h3 { font:700 22px Rajdhani; margin:0; }
-.skin p { font-size:12px; color:var(--muted); }
-.skin button {
-  width:100%;
-  padding:11px;
-  color:white;
-  background:#292b34;
-  border:1px solid #454650;
-}
-.skin button.equipped { background:#54252e; border-color:var(--red); }
-.training {
-  background:#171920;
-  border:1px solid #373943;
-  padding:20px;
-}
-.training-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-}
-.stats { display:flex; gap:25px; }
-.stat strong { display:block; font:700 28px Rajdhani; color:var(--red); }
-.stat small { color:var(--muted); font-size:10px; letter-spacing:1px; }
-#arena {
-  display:block;
-  width:100%;
-  height:390px;
-  background:radial-gradient(ellipse at center,#30333e,#15161c 75%);
-  margin-top:20px;
-  cursor:crosshair;
-  border:1px solid #41434d;
-}
-footer {
-  padding:24px 7%;
-  color:#666975;
-  font-size:11px;
-  border-top:1px solid #292a32;
-  display:flex;
-  justify-content:space-between;
-}
-@media(max-width:650px) {
-  header { height:auto; padding:18px; flex-wrap:wrap; gap:16px; }
-  nav { order:3; width:100%; gap:16px; overflow:auto; }
-  .hero { padding:35px 25px; }
-  .page { padding:30px 5%; }
-  .stats { gap:14px; }
-  #arena { height:320px; }
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 </style>
 </head>
+
 <body>
 
-<header>
-  <div class="logo">VALO<span>BLOX</span></div>
-  <nav>
-    <button class="active" data-page="home">INÍCIO</button>
-    <button data-page="arsenal">ARSENAL</button>
-    <button data-page="training">TREINO</button>
-    <button data-page="matches">PARTIDAS</button>
-  </nav>
-  <button class="account" onclick="login()">ENTRAR</button>
-</header>
+<div class="screen">
 
-<main>
-  <section class="page active" id="home">
-    <div class="hero">
-      <div class="eyebrow">TACTICAL FPS EXPERIENCE</div>
-      <h1>VALO<span>BLOX</span></h1>
-      <p>Prepare sua mira. Escolha seu arsenal. Entre na arena. A batalha começa aqui.</p>
-      <button class="primary" onclick="showPage('training')">JOGAR AGORA →</button>
+    <div class="message" id="author">
+        <h1>By : icebrunexz</h1>
     </div>
-    <div class="cards">
-      <div class="card">
-        <h3>01 / ARSENAL</h3>
-        <p>Personalize suas armas e escolha suas skins favoritas.</p>
-        <button onclick="showPage('arsenal')">ABRIR ARSENAL →</button>
-      </div>
-      <div class="card">
-        <h3>02 / TREINAMENTO</h3>
-        <p>Pratique sua precisão e melhore sua mira.</p>
-        <button onclick="showPage('training')">ENTRAR NO TREINO →</button>
-      </div>
-      <div class="card">
-        <h3>03 / 5V5</h3>
-        <p>Prepare-se para batalhas táticas em equipe.</p>
-        <button onclick="showPage('matches')">VER PARTIDAS →</button>
-      </div>
-    </div>
-  </section>
 
-  <section class="page" id="arsenal">
-    <h2 class="section-title">SEU ARSENAL</h2>
-    <p class="sub">Escolha uma aparência para sua arma.</p>
-    <div class="cards" id="skinList">
-      <div class="skin">
-        <div class="weapon">V</div>
-        <h3>RIFLE CLASSIC</h3><p>Skin padrão · Gratuita</p>
-        <button class="equipped" onclick="equip(this)">EQUIPADA</button>
-      </div>
-      <div class="skin">
-        <div class="weapon" style="color:#55c8ff">✦</div>
-        <h3>CYBER BLUE</h3><p>Skin especial · Demonstração</p>
-        <button onclick="equip(this)">EQUIPAR</button>
-      </div>
-      <div class="skin">
-        <div class="weapon" style="color:#d49cff">◇</div>
-        <h3>NEON PURPLE</h3><p>Skin especial · Demonstração</p>
-        <button onclick="equip(this)">EQUIPAR</button>
-      </div>
-      <div class="skin">
-        <div class="weapon" style="color:#f6c45a">⚡</div>
-        <h3>GOLD STRIKE</h3><p>Skin especial · Demonstração</p>
-        <button onclick="equip(this)">EQUIPAR</button>
-      </div>
+    <div class="message" id="disclaimer">
+        <h1>Esse site foi criado por um fã</h1>
+        <p>NADA QUE TEM NESSE SITE É OFICIAL</p>
     </div>
-  </section>
 
-  <section class="page" id="training">
-    <h2 class="section-title">CAMPO DE TREINAMENTO</h2>
-    <p class="sub">Clique nos alvos para testar sua precisão.</p>
-    <div class="training">
-      <div class="training-top">
-        <div class="stats">
-          <div class="stat"><strong id="score">0</strong><small>PONTOS</small></div>
-          <div class="stat"><strong id="hits">0</strong><small>ACERTOS</small></div>
-          <div class="stat"><strong id="time">30</strong><small>SEGUNDOS</small></div>
-        </div>
-        <button class="primary" id="start">INICIAR TREINO</button>
-      </div>
-      <canvas id="arena"></canvas>
-      <p class="sub" id="message">Pressione iniciar para começar.</p>
-    </div>
-  </section>
-
-  <section class="page" id="matches">
-    <h2 class="section-title">CENTRAL DE PARTIDAS</h2>
-    <p class="sub">Escolha seu modo de jogo.</p>
-    <div class="cards">
-      <div class="card">
-        <h3>5V5 CONTRA BOTS</h3>
-        <p>Monte uma partida contra adversários controlados pelo computador. Este modo ainda está em desenvolvimento.</p>
-        <button onclick="alert('O modo 5x5 está em desenvolvimento!')">EM BREVE</button>
-      </div>
-      <div class="card">
-        <h3>MULTIPLAYER ONLINE</h3>
-        <p>Encontre jogadores reais e dispute partidas online.</p>
-        <button onclick="alert('O multiplayer online está em desenvolvimento!')">EM BREVE</button>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <span>VALOBLOX © 2026</span>
-  <span>PROJETO INDEPENDENTE · EM DESENVOLVIMENTO</span>
-</footer>
+</div>
 
 <script>
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(name).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b => {
-    b.classList.toggle('active', b.dataset.page === name);
-  });
-}
-document.querySelectorAll('nav button').forEach(button => {
-  button.addEventListener('click', () => showPage(button.dataset.page));
-});
+const author = document.getElementById("author");
+const disclaimer = document.getElementById("disclaimer");
 
-function login() {
-  const user = prompt('Digite seu nome de jogador:');
-  if (user && user.trim()) {
-    document.querySelector('.account').textContent = user.trim().toUpperCase();
-  }
-}
-function equip(button) {
-  document.querySelectorAll('.skin button').forEach(b => {
-    b.textContent = 'EQUIPAR';
-    b.classList.remove('equipped');
-  });
-  button.textContent = 'EQUIPADA';
-  button.classList.add('equipped');
-}
+setTimeout(() => {
+    author.style.display = "block";
+}, 5000);
 
-// CAMPO DE TREINAMENTO
-const canvas = document.getElementById('arena');
-const ctx = canvas.getContext('2d');
-let target = null;
-let score = 0, hits = 0, time = 30, playing = false;
-let timer = null;
+setTimeout(() => {
+    author.style.display = "none";
+    disclaimer.style.display = "block";
+}, 9000);
 
-function resizeArena() {
-  const rect = canvas.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-  draw();
-}
-function newTarget() {
-  const w = canvas.clientWidth, h = canvas.clientHeight;
-  target = {
-    x: 35 + Math.random() * (w - 70),
-    y: 35 + Math.random() * (h - 70),
-    r: 19
-  };
-  draw();
-}
-function draw() {
-  const w = canvas.clientWidth, h = canvas.clientHeight;
-  ctx.clearRect(0,0,w,h);
-  ctx.strokeStyle = '#343741';
-  ctx.lineWidth = 1;
-  for(let x=0; x<w; x+=40) {
-    ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke();
-  }
-  for(let y=0; y<h; y+=40) {
-    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke();
-  }
-  if(target && playing) {
-    ctx.beginPath();
-    ctx.arc(target.x,target.y,target.r,0,Math.PI*2);
-    ctx.fillStyle = '#ff4655';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(target.x,target.y,target.r-7,0,Math.PI*2);
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(target.x,target.y,3,0,Math.PI*2);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-  }
-}
-document.getElementById('start').onclick = () => {
-  if(playing) return;
-  score=0; hits=0; time=30; playing=true;
-  updateStats();
-  document.getElementById('message').textContent='Mire e acerte o maior número de alvos!';
-  document.getElementById('start').textContent='TREINANDO...';
-  newTarget();
-  timer=setInterval(()=>{
-    time--;
-    updateStats();
-    if(time<=0) {
-      clearInterval(timer);
-      playing=false;
-      target=null;
-      draw();
-      document.getElementById('start').textContent='JOGAR NOVAMENTE';
-      document.getElementById('message').textContent='Treino encerrado! Você fez '+score+' pontos.';
-    }
-  },1000);
-};
-canvas.addEventListener('click', e => {
-  if(!playing || !target) return;
-  const rect=canvas.getBoundingClientRect();
-  const x=e.clientX-rect.left, y=e.clientY-rect.top;
-  const distance=Math.hypot(x-target.x,y-target.y);
-  if(distance<=target.r) {
-    score+=100;
-    hits++;
-    updateStats();
-    newTarget();
-  }
-});
-function updateStats() {
-  document.getElementById('score').textContent=score;
-  document.getElementById('hits').textContent=hits;
-  document.getElementById('time').textContent=time;
-}
-window.addEventListener('resize',resizeArena);
-resizeArena();
+setTimeout(() => {
+    disclaimer.style.display = "none";
+}, 15000);
 </script>
+
 </body>
 </html>
